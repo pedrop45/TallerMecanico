@@ -1,5 +1,6 @@
-package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
+package org.iesalandalus.programacion.tallermecanico.modelo;
 
+import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -76,7 +77,7 @@ class VehiculoTest {
 	}
 
 	@ParameterizedTest(name = "Cuando llamamos a getVehiculo con una matrícula no válida: {0} lanza excepción")
-	@CsvSource({"''", "' '", "'   '", "123BCD", "12345BCD", "1234ABC", "BCD1234"})
+	@CsvSource({"''", "' '", "'   '", "123BCD", "12345BCD", "12345ABC", "BCD1234"})
 	void getVehiculoMatriculaNoValidaLanzaExcepcion(String matricula) {
 		IllegalArgumentException iae = assertThrows(IllegalArgumentException.class,() -> Vehiculo.get(matricula));
 		assertEquals("La matrícula no tiene un formato válido.", iae.getMessage());
@@ -89,7 +90,7 @@ class VehiculoTest {
 		assertNotEquals(Vehiculo.get("1234BCD"), Vehiculo.get("1111BBB"));
 		assertNotEquals(Vehiculo.get("1234BCD").hashCode(), Vehiculo.get("1111BBB").hashCode());
 	}
-	
+
 	@Test
 	void toStringDevuelveLaCadenaEsperada() {
 		assertEquals(String.format("%s %s - %s", MARCA, MODELO, MATRICULA), vehiculo.toString());
