@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.tallermecanico.modelo;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
+import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Revision;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -204,7 +205,7 @@ class RevisionTest {
 
     @Test
     void equalsHashCodeSeBasanSoloEnClienteVehiculoFechaInicio() {
-        Revision otraRevision = new org.iesalandalus.programacion.tallermecanico.modelo.Revision(cliente, vehiculo, ayer);
+        Revision otraRevision = new Revision(cliente, vehiculo, ayer);
         assertEquals(revision, otraRevision);
         assertEquals(revision.hashCode(), otraRevision.hashCode());
         assertDoesNotThrow(() -> otraRevision.cerrar(hoy));
