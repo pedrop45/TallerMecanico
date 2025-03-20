@@ -10,34 +10,35 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class Consola {
+    private Vehiculo vehiculo;
 
-    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
+    private static final String CADENA_FORMATO_FECHA = "dd/MM/yyyy";
     private Consola() {
 
     }
 
     public static void mostrarCabecera(String mensaje) {
-        System.out.println("\n" + mensaje);
-        for (int i = 0; i < mensaje.length(); i++) {
-            System.out.print("-");
-        }
-        System.out.println();
+        System.out.printf("%n%s%n", mensaje);
+        System.out.printf("-".repeat(mensaje.length()).concat("%n%n"));
     }
 
     public static void mostrarMenu() {
-        System.out.println("\nSistema de Gestión del Taller Mecánico");
+       mostrarCabecera("Gestión de un taller mecánico.");
         for (Opcion opcion : Opcion.values()) {
             System.out.println(opcion);
         }
     }
 
     public static Opcion elegirOpcion() {
-        int numeroOpcion;
+        Opcion opcion = null;
         do {
-            numeroOpcion = leerEntero("Elige una opción: ");
-        } while (!Opcion.esValida(numeroOpcion));
-        return Opcion.get(numeroOpcion);
+            try {
+                opcion = Opcion.get(leerEntero("\nElige un opción: "));
+            } catch (IllegalArgumentException e) {
+                System.out.printf("ERROR: %s%n", e.getMessage());
+            }
+        } while (opcion == null);
+        return opcion;
     }
 
     private static int leerEntero(String mensaje) {
@@ -47,34 +48,30 @@ public class Consola {
 
     private static float leerReal(String mensaje) {
         System.out.print(mensaje);
-            System.out.print("Entrada no válida. " + mensaje);
-
-        float real = Entrada.real();
-        return real;
+        return Entrada.real();
     }
 
     private static LocalDate leerFecha(String mensaje) {
-        System.out.print(mensaje);
-        while (true) {
-            try {
-                String fechaStr = Entrada.cadena();
-                return LocalDate.parse(fechaStr, FORMATO_FECHA);
-            } catch (DateTimeParseException e) {
-                System.out.print("Fecha no válida. " + mensaje);
-            }
+        LocalDate fecha;
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(CADENA_FORMATO_FECHA);
+        mensaje = String.format("%s (%s): ", mensaje, CADENA_FORMATO_FECHA);
+        try {
+            fecha = LocalDate.parse(leerCadena(mensaje), formatoFecha);
+        } catch (DateTimeParseException e) {
+            fecha = null;
         }
+        return fecha;
     }
 
     public static Cliente leerCliente() {
         String nombre = leerCadena("Introduce el nombre: ");
         String dni = leerCadena("Introduce el DNI: ");
         String telefono = leerCadena("Introduce el teléfono: ");
-        return new Cliente(nombre, dni, telefono);
+        return new Cliente (nombre, dni, telefono);
     }
 
     public static Cliente leerClienteDni() {
-        String dni = leerCadena("Introduce el DNI del cliente: ");
-        return new Cliente("Nombre", dni, "Telefono");
+        return Cliente.get(leerCadena("Introduce el DNI: "));
     }
 
     public static String leerNuevoNombre() {
@@ -93,27 +90,27 @@ public class Consola {
     }
 
     public static Vehiculo leerVehiculoMatricula() {
-        String matricula = leerCadena("Introduce la matrícula del vehículo: ");
-        return new Vehiculo("Marca", "Modelo", matricula);
+        return Vehiculo.get(leerCadena("Introduce la matrícula: "));
+
     }
 
     public static Revision leerRevision() {
         Cliente cliente = leerClienteDni();
         Vehiculo vehiculo = leerVehiculoMatricula();
-        LocalDate fecha = leerFecha("Introduce la fecha de la revisión (dd/MM/yyyy): ");
+        LocalDate fecha = leerFecha("Introduce la fecha de inicio ");
         return new Revision(cliente, vehiculo, fecha);
     }
 
     public static int leerHoras() {
-        return leerEntero("Introduce el número de horas: ");
+        return leerEntero("Introduce las horas a añadir: ");
     }
 
     public static float leerPrecioMaterial() {
-        return leerReal("Introduce el precio del material: ");
+        return leerReal("Introduce el precio del material a añadir: ");
     }
 
     public static LocalDate leerFechaCierre() {
-        return leerFecha("Introduce la fecha de cierre (dd/MM/yyyy): ");
+        return leerFecha("Introduce la fecha de cierre");
     }
 
     private static String leerCadena(String mensaje) {

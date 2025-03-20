@@ -46,12 +46,12 @@ public class Clientes {
             }
         }
         if (!clientes.contains(cliente)) {
-            throw new TallerMecanicoExcepcion("No existe ningun cliente con ese DNI.");
+            throw new TallerMecanicoExcepcion("No existe ningún cliente con ese DNI.");
         }
 
         if (telefono != null) {
             if (telefono.isBlank()) {
-                throw new TallerMecanicoExcepcion("El telefono no puede estar en blanco.");
+                throw new TallerMecanicoExcepcion("El teléfono no puede estar en blanco.");
             }
             if (!telefono.equals(cliente.getTelefono())) {
                 cliente.setTelefono(telefono);

@@ -9,15 +9,15 @@ import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class Controlador {
     private Vista vista;
     private Modelo modelo;
 
     public Controlador(Vista vista, Modelo modelo) throws TallerMecanicoExcepcion {
-        if (vista == null || modelo == null) {
-            throw new IllegalArgumentException("Vista y modelo no pueden ser nulos.");
-        }
+        Objects.requireNonNull(modelo, "ERROR: El modelo no puede ser nulo.");
+        Objects.requireNonNull(vista, "ERROR: La vista no puede ser nula.");
         this.vista = vista;
         this.modelo = modelo;
         this.vista.setControlador(this);
@@ -73,12 +73,12 @@ public class Controlador {
         modelo.borrar(revision);
     }
 
-    public void anadirHoras(Revision revision, int horas) throws TallerMecanicoExcepcion {
-        modelo.anadirHoras(revision, horas);
+    public Revision anadirHoras(Revision revision, int horas) throws TallerMecanicoExcepcion {
+        return modelo.anadirHoras(revision, horas);
     }
 
-    public void anadirPrecioMaterial(Revision revision, double precioMaterial) throws TallerMecanicoExcepcion {
-        modelo.anadirPrecioMaterial(revision, (float) precioMaterial);
+    public Revision anadirPrecioMaterial(Revision revision, double precioMaterial) throws TallerMecanicoExcepcion {
+        return modelo.anadirPrecioMaterial(revision, (float) precioMaterial);
     }
 
     public void cerrar(Revision revision, LocalDate fechaFin) throws TallerMecanicoExcepcion {
