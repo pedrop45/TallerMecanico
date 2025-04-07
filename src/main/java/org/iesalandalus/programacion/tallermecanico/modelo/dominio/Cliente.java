@@ -1,5 +1,6 @@
 package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
 
+
 import java.util.Objects;
 
 public class Cliente {
