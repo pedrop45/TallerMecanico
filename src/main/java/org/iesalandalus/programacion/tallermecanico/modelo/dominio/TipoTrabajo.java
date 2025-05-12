@@ -3,18 +3,14 @@ package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
 import java.util.Objects;
 
 public enum TipoTrabajo {
-
     MECANICO("Mecánico"),
     REVISION("Revisión");
 
-    private String nombre;
-
+    private final String nombre;
 
     private TipoTrabajo(String nombre) {
         this.nombre = nombre;
     }
-
-
 
     public static TipoTrabajo get(Trabajo trabajo) {
         Objects.requireNonNull(trabajo, "El trabajo no puede ser nulo.");

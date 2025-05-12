@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-public interface  Modelo {
+public interface Modelo {
     void comenzar();
 
     void terminar();
@@ -36,9 +36,9 @@ public interface  Modelo {
 
     void borrar(Cliente cliente) throws TallerMecanicoExcepcion;
 
-    void borrar(Trabajo trabajo) throws TallerMecanicoExcepcion;
-
     void borrar(Vehiculo vehiculo) throws TallerMecanicoExcepcion;
+
+    void borrar(Trabajo trabajo) throws TallerMecanicoExcepcion;
 
     List<Cliente> getClientes();
 
