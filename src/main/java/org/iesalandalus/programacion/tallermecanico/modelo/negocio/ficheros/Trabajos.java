@@ -1,25 +1,56 @@
-package org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria;
+package org.iesalandalus.programacion.tallermecanico.modelo.negocio.ficheros;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Mecanico;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
+import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
 
+import javax.swing.text.Document;
+import javax.swing.text.Element;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class Trabajos implements ITrabajos {
 
+    private static final String FICHERO_TRABAJOS = "";
+    private static final DateTimeFormatter FORMATO_FECHA = null;
+    private static final String TRABAJO;
+    private static final String CLIENTE;
+    private static final String VEHICULO;
+    private static final String FECHA_INICIO;
+    private static final String FECHA_FIN;
+    private static final String HORAS;
+    private static String PRECIO_MATERIAL;
+    private static String TIPO;
+    private static String REVISION;
+    private static String MECANICO;
+
+    
+    
+    
     private final List<Trabajo> coleccionTrabajos;
 
     public Trabajos() {
         coleccionTrabajos = new ArrayList<>();
     }
+
+    
+
+    public void procesarDocumentoXml(Document documentoXml) {
+
+    }
+    public Trabajo getTrabajo(Element elemento ){
+
+    }
+
+    public void terminar() {
+
+    }
+    private Document crearDocumentoXml() {
+
+    }
+
+    private Element getElemento (Document documentoXml, Trabajo trabajo)
 
     @Override
     public List<Trabajo> get() {
@@ -46,6 +77,27 @@ public class Trabajos implements ITrabajos {
             }
         }
         return trabajosVehiculo;
+    }
+
+    public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
+        Objects.requireNonNull(mes, "El mes no puede ser nulo.");
+        Map<TipoTrabajo, Integer> estadisticas = inicializarEstadisticas();
+        for (Trabajo trabajo : coleccionTrabajos) {
+            LocalDate fecha = trabajo.getFechaInicio();
+            if (fecha.getMonthValue() == mes.getMonthValue() && fecha.getYear() == mes.getYear()) {
+                TipoTrabajo tipoTrabajo = TipoTrabajo.get(trabajo);
+                estadisticas.put(tipoTrabajo, estadisticas.get(tipoTrabajo) + 1);
+            }
+        }
+        return estadisticas;
+    }
+
+    private Map<TipoTrabajo, Integer> inicializarEstadisticas() {
+        Map<TipoTrabajo, Integer> estadisticas = new EnumMap<>(TipoTrabajo.class);
+        for (TipoTrabajo tipoTrabajo : TipoTrabajo.values()) {
+            estadisticas.put(tipoTrabajo, 0);
+        }
+        return estadisticas;
     }
 
     @Override

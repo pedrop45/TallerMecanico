@@ -23,6 +23,7 @@ public enum Evento {
     ANADIR_HORAS_TRABAJO(38, "Añadir horas a un trabajo."),
     ANADIR_PRECIO_MATERIAL_TRABAJO(52, "Añadir precio deL material a un trabajo."),
     CERRAR_TRABAJO(70, "Cerrar trabajo."),
+    MOSTRAR_ESTADISTICAS_MENSUALES(41, "Mostrar estadisticas mensuales."),
     SALIR(0, "Salir.");
 
     private final int codigo;
@@ -54,7 +55,7 @@ public enum Evento {
 
     public static Evento get(int codigo) {
        if (!esValido(codigo)) {
-           throw new IllegalArgumentException("El codigo no es correcto.");
+           throw new IllegalArgumentException("El código no es correcto.");
        }
        return eventos.get(codigo);
     }

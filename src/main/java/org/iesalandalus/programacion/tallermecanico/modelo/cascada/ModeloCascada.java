@@ -7,7 +7,7 @@ import org.iesalandalus.programacion.tallermecanico.modelo.negocio.FabricaFuente
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IClientes;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.IFuenteDatos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ficheros.IFuenteDatos;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -6,7 +6,9 @@ import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.GestorEventos;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class VistaTexto implements Vista {
 
@@ -146,6 +148,7 @@ public class VistaTexto implements Vista {
     @Override
     public void mostrarVehiculos(List<Vehiculo> vehiculos) {
         if (!vehiculos.isEmpty()) {
+            vehiculos.sort(Comparator.comparing(Vehiculo::marca).thenComparing(Vehiculo::modelo).thenComparing(Vehiculo::matricula));
             for (Vehiculo vehiculo : vehiculos) {
                 System.out.println(vehiculo);
             }
@@ -157,12 +160,18 @@ public class VistaTexto implements Vista {
     @Override
     public void mostrarTrabajos(List<Trabajo> trabajos) {
         if (!trabajos.isEmpty()) {
+            Comparator<Cliente> comparadorCliente = Comparator.comparing(Cliente::getNombre).thenComparing(Cliente::getDni);
+            trabajos.sort(Comparator.comparing(Trabajo::getFechaInicio).thenComparing(Trabajo::getCliente, comparadorCliente));
             for (Trabajo trabajo : trabajos) {
                 System.out.println(trabajo);
             }
         } else {
             System.out.println("No hay trabajos que mostrar");
         }
+    }
+
+    public void mostrarEstadisticasMensuales(Map<TipoTrabajo, Integer> estadisticas) {
+        System.out.printf("Tipos de trabajos realizados este mes: %s%n", estadisticas);
     }
 
 }
