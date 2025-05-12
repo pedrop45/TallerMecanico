@@ -2,12 +2,12 @@ package org.iesalandalus.programacion.tallermecanico.vista.eventos;
 
 import java.util.*;
 
-
 public class GestorEventos {
-     Map<Evento, List<ReceptorEventos>> receptores = new EnumMap<>(Evento.class);
+
+    private final Map<Evento, List<ReceptorEventos>> receptores = new EnumMap<>(Evento.class);
 
     public GestorEventos(Evento... eventos) {
-        Objects.requireNonNull(eventos, "Se debe gestionar algún evento");
+        Objects.requireNonNull(eventos, "Se debe gestionar algún evento.");
         for (Evento evento : eventos) {
             receptores.put(evento, new ArrayList<>());
         }

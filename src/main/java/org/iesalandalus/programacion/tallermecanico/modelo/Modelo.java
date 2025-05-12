@@ -1,13 +1,15 @@
 package org.iesalandalus.programacion.tallermecanico.modelo;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
+import org.iesalandalus.programacion.tallermecanico.modelo.dominio.TipoTrabajo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
-public interface  Modelo {
+public interface Modelo {
     void comenzar();
 
     void terminar();
@@ -34,9 +36,9 @@ public interface  Modelo {
 
     void borrar(Cliente cliente) throws TallerMecanicoExcepcion;
 
-    void borrar(Trabajo trabajo) throws TallerMecanicoExcepcion;
-
     void borrar(Vehiculo vehiculo) throws TallerMecanicoExcepcion;
+
+    void borrar(Trabajo trabajo) throws TallerMecanicoExcepcion;
 
     List<Cliente> getClientes();
 
@@ -47,4 +49,6 @@ public interface  Modelo {
     List<Trabajo> getTrabajos(Cliente cliente);
 
     List<Trabajo> getTrabajos(Vehiculo vehiculo);
+
+    Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes);
 }

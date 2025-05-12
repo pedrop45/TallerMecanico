@@ -3,15 +3,12 @@ package org.iesalandalus.programacion.tallermecanico.modelo.cascada;
 import org.iesalandalus.programacion.tallermecanico.modelo.Modelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.FabricaFuenteDatos;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IClientes;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.IFuenteDatos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ModeloCascada implements Modelo {
@@ -20,30 +17,39 @@ public class ModeloCascada implements Modelo {
     private ITrabajos trabajos;
 
     public ModeloCascada(FabricaFuenteDatos fabricaFuenteDatos) {
-        Objects.requireNonNull(fabricaFuenteDatos, "La factoria de la fuente de datos no puede ser nula.");
+        Objects.requireNonNull(fabricaFuenteDatos, "La factoría de la fuente de datos no puede ser nula.");
         IFuenteDatos fuenteDatos = fabricaFuenteDatos.crear();
         clientes = fuenteDatos.crearClientes();
         vehiculos = fuenteDatos.crearVehiculos();
         trabajos = fuenteDatos.crearTrabajos();
-
     }
 
     @Override
     public void comenzar() {
+        clientes.comenzar();
+        vehiculos.comenzar();
+        trabajos.comenzar();
         System.out.println("Modelo comenzado.");
     }
+
     @Override
     public void terminar() {
+        trabajos.terminar();
+        vehiculos.terminar();
+        clientes.terminar();
         System.out.println("Modelo terminado.");
     }
+
     @Override
     public void insertar(Cliente cliente) throws TallerMecanicoExcepcion {
         clientes.insertar(new Cliente(cliente));
     }
+
     @Override
     public void insertar(Vehiculo vehiculo) throws TallerMecanicoExcepcion {
         vehiculos.insertar(vehiculo);
     }
+
     @Override
     public void insertar(Trabajo trabajo) throws TallerMecanicoExcepcion {
         Cliente cliente = clientes.buscar(trabajo.getCliente());
@@ -58,19 +64,19 @@ public class ModeloCascada implements Modelo {
 
     @Override
     public Cliente buscar(Cliente cliente) {
-        cliente = Objects.requireNonNull(clientes.buscar(cliente), "No existe un cliente igual");
+        cliente = Objects.requireNonNull(clientes.buscar(cliente), "No existe un cliente igual.");
         return new Cliente(cliente);
     }
 
     @Override
     public Vehiculo buscar(Vehiculo vehiculo) {
-        vehiculo = Objects.requireNonNull(vehiculos.buscar(vehiculo), "No existe un vehiculo igual.");
+        vehiculo = Objects.requireNonNull(vehiculos.buscar(vehiculo), "No existe un vehículo igual.");
         return vehiculo;
     }
 
     @Override
     public Trabajo buscar(Trabajo trabajo) {
-        trabajo = Objects.requireNonNull(trabajos.buscar(trabajo), "No existe un trabajo igual");
+        trabajo = Objects.requireNonNull(trabajos.buscar(trabajo), "No existe un trabajo igual.");
         return Trabajo.copiar(trabajo);
     }
 
@@ -103,9 +109,10 @@ public class ModeloCascada implements Modelo {
         clientes.borrar(cliente);
     }
 
+    @Override
     public void borrar(Vehiculo vehiculo) throws TallerMecanicoExcepcion {
-        List<Trabajo> trabajosvehiculo = trabajos.get(vehiculo);
-        for (Trabajo trabajo : trabajosvehiculo) {
+        List<Trabajo> trabajosVehiculo = trabajos.get(vehiculo);
+        for (Trabajo trabajo : trabajosVehiculo) {
             trabajos.borrar(trabajo);
         }
         vehiculos.borrar(vehiculo);
@@ -156,4 +163,10 @@ public class ModeloCascada implements Modelo {
         }
         return trabajosCliente;
     }
+
+    @Override
+    public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
+        return trabajos.getEstadisticasMensuales(mes);
+    }
+
 }
